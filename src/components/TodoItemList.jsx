@@ -1,11 +1,17 @@
 import { memo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import FunctionalTodoItem from './FunctionalTodoItem';
 
-const FunctionalTodoItemList = ({ myTodos, myToggle, myRemove }) => {
+import TodoItem from './TodoItem';
+import { fetchAllTodos } from '@/reducers/todoSlice';
+
+const TodoItemList = ({ myToggle, myRemove }) => {
+  const myTodos = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
+
   const todoList = myTodos.map(
     ({ id, text, checked }) => (
-      <FunctionalTodoItem
+      <TodoItem
         id={id}
         text={text}
         checked={checked}
@@ -23,8 +29,7 @@ const FunctionalTodoItemList = ({ myTodos, myToggle, myRemove }) => {
   );
 };
 
-FunctionalTodoItemList.propTypes = {
-  myTodos: PropTypes.array,
+TodoItemList.propTypes = {
   myToggle: PropTypes.func,
   myRemove: PropTypes.func
 };
@@ -32,6 +37,6 @@ FunctionalTodoItemList.propTypes = {
 // memo를 사용하여 shouldComponentUpdate 대체
 // myTodos가 변경될 때만 리렌더링
 export default memo(
-  FunctionalTodoItemList,
+  TodoItemList,
   (prevProps, nextProps) => prevProps.myTodos === nextProps.myTodos
 );
